@@ -1,3 +1,3 @@
 # NightCrawler
-A simple and powerful webcrawler, written in scala and easily extensible.
+A simple and powerful webcrawler, easily extensible and written in scala.
 
