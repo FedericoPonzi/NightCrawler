@@ -1,13 +1,18 @@
 package me.fponzi.nightcrawler
 import scala.collection.mutable.ListBuffer
-
-class NightCrawler (host: String, numberOfThreads: Int = 1, followLinks : Boolean = true) {
+class NightCrawlerBuilder (host: String) {
   private val reportIf = new ListBuffer[FetchedResource => Boolean]()
-
-  def reportIf_(conditionChecker: FetchedResource => Boolean): NightCrawler= {
+  def addReportIf(conditionChecker: FetchedResource => Boolean): NightCrawlerBuilder ={
     reportIf.append(conditionChecker)// conditionChecker
     this
   }
+  def build : NightCrawler= {
+    new NightCrawler(host, 1, followLinks = true, reportIf = reportIf.result())
+  }
+}
+
+class NightCrawler (host: String, numberOfThreads: Int = 1, followLinks : Boolean = true, reportIf : List[FetchedResource => Boolean]) {
+
   def run() : Unit = {
     println("Running the night crawler bro!")
     val fetcher = new Fetcher(host)

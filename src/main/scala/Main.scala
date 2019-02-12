@@ -1,19 +1,15 @@
-import me.fponzi.nightcrawler.NightCrawler
+import me.fponzi.nightcrawler.NightCrawlerBuilder
 
 object Main extends App {
   println("Hello, world!")
-  //val nightCrawler = new NightCrawler("https://blog.informaticalab.com")
-  val nightCrawler = new NightCrawler("https://fponzi.me")
-  //nightCrawler.run()
-  println(nightCrawler
-  /**
-    * Test for 404s:
-    */
-    .reportIf_(fetchedPage => fetchedPage.responseCode == 404)
-  /**
-    * Test for page size:
-    */
-    .reportIf_(fetchedPage => fetchedPage.pageSize > 1500)
-    .run())
+  //val host = "https://blog.informaticalab.com"
+  val host = "https://fponzi.me"
+
+  val nightCrawlerBuilder = new NightCrawlerBuilder(host)
+  val nightCrawler = nightCrawlerBuilder.addReportIf(fetchedPage => fetchedPage.responseCode == 404)
+                                        .addReportIf(fetchedPage => fetchedPage.pageSize > 1500)
+                                        .build
+
+  println(nightCrawler.run())
 
 }
